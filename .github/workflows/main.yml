@@ -3,7 +3,7 @@ name: Java CI with Gradle
 env:
   PROJECT_NAME: airDnsTest
   BUCKET_NAME: githubactionaws
-  CODE_DEPLOY_APP: springbootwithgitaction
+  CODE_DEPLOY_APP: airDnS-test
   CODE_DEPLOY_DEPLOYMENT_GROUP: springboot-gitaction
   
 on:
