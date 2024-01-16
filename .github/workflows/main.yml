@@ -52,8 +52,9 @@ jobs:
 
     # CodeDeploy에게 배포 명령을 내린다.
     - name: Code Deploy
-      run: >
-       aws deploy create-deployment --application-name $CODE_DEPLOY_APP
-       --deployment-config-name CodeDeployDefault.AllAtOnce
-       --deployment-group-name $CODE_DEPLOY_DEPLOYMENT_GROUP
-       --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=deploy/$PROJECT_NAME.zip
+      run: aws deploy create-deployment--application-name $CODE_DEPLOY_APP_NAME --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name $DEPLOYMENT_GROUP_NAME --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
+      #run: >
+      # aws deploy create-deployment --application-name $CODE_DEPLOY_APP
+      # --deployment-config-name CodeDeployDefault.AllAtOnce
+      # --deployment-group-name $CODE_DEPLOY_DEPLOYMENT_GROUP
+      # --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=deploy/$PROJECT_NAME.zip
