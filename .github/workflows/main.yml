@@ -32,30 +32,33 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
 
-    # build한 후 프로젝트를 압축한다.
-    - name: Make zip file
-      run: zip -r ./$PROJECT_NAME.zip .
-      shell: bash
-      
-    # aws 인증서비스
-    # github repository에서 Setting에서 사용할 암호화된 변수
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
+    # DockerHub 계정 로그인
+    - name: DockerHub Login
+      uses: docker/login-action@v2
       with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION}}
+        username: ${{ secrets.DOCKERHUB_USERNAME}}
+        password: ${{ secrets.DOCKERHUB_PASSWORD}}
 
-    # Upload to S3 PROJECT_NAME.zip, DockerFile
-    - name: Upload to S3
-      run: aws s3 cp $PROJECT_NAME.zip s3://$BUCKET_NAME/deploy/$PROJECT_NAME.zip --region ap-northeast-2
-           aws s3 cp Dockerfile s3://$BUCKET_NAME/deploy/Dockerfile --region ap-northeast-2
+    # *.jar -> Docker Image Build
+    - name: Docker Image Build
+      run: docker build --platform linux --build-arg DEPENDENCY=build/dependency -t ${{ secrets.DOCKERHUB_USERNAME}}/${{ secrets.PROJECT_NAME }} .
 
-      # CodeDeploy에게 배포 명령을 내린다.
-    - name: Code Deploy
-     # run: aws deploy create-deployment--application-name $CODE_DEPLOY_APP --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name $CODE_DEPLOY_DEPLOYMENT_GROUP --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
-      run: 
-       aws deploy create-deployment --application-name $CODE_DEPLOY_APP
-       --deployment-config-name CodeDeployDefault.AllAtOnce
-       --deployment-group-name $CODE_DEPLOY_DEPLOYMENT_GROUP
-       --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=deploy/$PROJECT_NAME.zip
+    # DockerHub's Image push
+    - name: DockerHub Push
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/airDnsTest
+
+    # run application
+    - name: Run Application
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ubuntu
+        key: ${{ secrets.EC2_KEY }}
+        script: |
+          sudo docker kill airDnsTest
+          sudo docker rm -f airDnsTest
+          sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/airDnsTest
+          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/airDnsTest
+          sudo docker run -p 8082:8082 \
+                      --name airDnsTest \
+                      -d ${{ secrets.DOCKERHUB_USERNAME}}/airDnsTest
