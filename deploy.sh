@@ -22,6 +22,8 @@ fi
 echo "> Remove previous Docker image"
 docker rmi "$APP_NAME"
 
+# docker compose build
+# 여기 어디서 jar파일 찾기 -> target?
 echo "> Build Docker image"
 docker build -t "$APP_NAME" "$REPOSITORY"
 

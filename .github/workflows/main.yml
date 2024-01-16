@@ -46,11 +46,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION}}
 
-    # Upload to S3 stroage
+    # Upload to S3 PROJECT_NAME.zip, DockerFile
     - name: Upload to S3
       run: aws s3 cp $PROJECT_NAME.zip s3://$BUCKET_NAME/deploy/$PROJECT_NAME.zip --region ap-northeast-2
+           aws s3 cp Dockerfile s3://$BUCKET_NAME/deploy/Dockerfile --region ap-northeast-2
 
-    # CodeDeploy에게 배포 명령을 내린다.
+      # CodeDeploy에게 배포 명령을 내린다.
     - name: Code Deploy
      # run: aws deploy create-deployment--application-name $CODE_DEPLOY_APP --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name $CODE_DEPLOY_DEPLOYMENT_GROUP --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
       run: 
