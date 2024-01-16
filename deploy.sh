@@ -6,6 +6,7 @@ echo "> ci/cd test!"
 APP_NAME="airDnsTest"
 REPOSITORY="/home/ubuntu/"
 
+echo "> ${APP_NAME} + ${REPOSITORY}"
 echo "> Check the currently running container"
 CONTAINER_ID=$(docker ps -aqf "name=$APP_NAME")
 
