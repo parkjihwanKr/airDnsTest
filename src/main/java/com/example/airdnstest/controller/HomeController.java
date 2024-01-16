@@ -10,7 +10,6 @@ public class HomeController {
     public String goHome(){
         return "CI/CD";
     }
-
     @GetMapping("/api/v1")
     public String test(){
         return "test page";
