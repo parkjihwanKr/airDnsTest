@@ -1,11 +1,5 @@
 name: Java CI with Gradle
 
-env:
-  PROJECT_NAME: airDnsTest
-  BUCKET_NAME: githubactionaws
-  CODE_DEPLOY_APP: airDnS-test
-  CODE_DEPLOY_DEPLOYMENT_GROUP: springbootwithgitaction
-  
 on:
   push:
     branches: [ master ]
@@ -41,11 +35,11 @@ jobs:
 
     # *.jar -> Docker Image Build
     - name: Docker Image Build
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/airDnsTest .
+      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/air_dns_test .
 
     # DockerHub's Image push
     - name: DockerHub Push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/airDnsTest
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/air_dns_test
 
     # run application, ec2 client name : appleboy
     - name: Run Application
@@ -55,10 +49,10 @@ jobs:
         username: ubuntu
         key: ${{ secrets.EC2_KEY }}
         script: |
-          sudo docker kill airDnsTest
-          sudo docker rm -f airDnsTest
-          sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/airDnsTest
-          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/airDnsTest
+          sudo docker kill air_dns_test
+          sudo docker rm -f air_dns_test
+          sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/air_dns_test
+          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/air_dns_test
           sudo docker run -p 8082:8082 \
-                      --name airDnsTest \
-                      -d ${{ secrets.DOCKERHUB_USERNAME}}/airDnsTest
+                      --name air_dns_test \
+                      -d ${{ secrets.DOCKERHUB_USERNAME}}/air_dns_test
