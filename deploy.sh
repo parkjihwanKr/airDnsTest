@@ -2,20 +2,15 @@
 
 echo "> ci/cd test!"
 
-var APP = "test!"
-var APP_TEST = AirdnsTest
-
-echo "$APP + $APP_TEST"
 # 명령어가 bash 환경에서 실행됨을 명시해줍니다.
-APP_NAME= "airDnsTest"
+APP_NAME="airDnsTest"
 REPOSITORY="/home/ubuntu/"
 
 echo "> Check the currently running container"
 CONTAINER_ID=$(docker ps -aqf "name=$APP_NAME")
 
 # 도커 이미지 및 컨테이너 이름과, 빌드 파일의 경로를 변수로 적어줍니다.
-if [ -z "$CONTAINER_ID" ];
-then
+if [ -z "$CONTAINER_ID" ]; then
   echo "> No such container is running."
 else
   echo "> Stop and remove container: $CONTAINER_ID"
