@@ -1,6 +1,5 @@
 name: Java CI with Gradle
 
-# 환경 변수 $변수명으로 사용
 env:
   PROJECT_NAME: airDnsTest
   BUCKET_NAME: githubactionaws
