@@ -4,7 +4,7 @@ env:
   PROJECT_NAME: airDnsTest
   BUCKET_NAME: githubactionaws
   CODE_DEPLOY_APP: airDnS-test
-  CODE_DEPLOY_DEPLOYMENT_GROUP: springboot-gitaction
+  CODE_DEPLOY_DEPLOYMENT_GROUP: springbootwithgitaction
   
 on:
   push:
