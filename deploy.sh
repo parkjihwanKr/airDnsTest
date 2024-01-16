@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+echo "> ci/cd test!"
+
+var APP = "test!"
+var APP_TEST = AirdnsTest
+
+echo "$APP + $APP_TEST"
 # 명령어가 bash 환경에서 실행됨을 명시해줍니다.
 APP_NAME= "airDnsTest"
 REPOSITORY="/home/ubuntu/"
