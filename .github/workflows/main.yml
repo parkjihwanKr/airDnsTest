@@ -18,6 +18,16 @@ jobs:
         java-version: '17'
         distribution: 'zulu'
 
+      # mysql setup
+    - name: MySQL Setting
+      uses: mirromutth/mysql-action@v1.1
+      with:
+        host port: 3306
+        container port: 3306
+        mysql database: 'cicdtest'
+        mysql user : 'root'
+        mysql password: ${{ secrets.DB_PASSWORD }}
+
     # 권한 부여
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
@@ -25,18 +35,6 @@ jobs:
     # Build Gradle
     - name: Build with Gradle
       run: ./gradlew build
-
-    # mysql
-    - name: MySQL Setting
-      uses: mirromutth/mysql-action@v1.1
-      with:
-        host port: 3306
-        container port: 3306
-        character set server: 'utf8'
-        collation server: 'utf8_general_ci
-        mysql version: '8.0'
-        mysql database: 'cicdtest'
-        mysql root password: ${{ secrets.DB_PASSWORD }}
 
     # DockerHub 계정 로그인
     - name: DockerHub Login
