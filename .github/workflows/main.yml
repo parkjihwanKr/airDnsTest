@@ -26,15 +26,6 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
 
-    # mysql
-    - name: Mysql setting
-      uses: mirromutth/mysql-action@v1.1
-      with:
-        host port: 3306
-        container port: 3306
-        mysql database: 'cicdtest'
-        mysql root password: ${{ secrets.DB_PASSWORD }}
-
     # DockerHub 계정 로그인
     - name: DockerHub Login
       uses: docker/login-action@v2
